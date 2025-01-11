@@ -10,7 +10,13 @@ import {
   Bounce,
 } from "react-toastify";
 
-const Input = () => {
+interface InputProps {
+  darkMode: boolean;
+}
+
+const Input: React.FC<InputProps> = ({
+  darkMode,
+}) => {
   const [url, setUrl] = useState<string>("");
   const [error, setError] =
     useState<boolean>(false);
@@ -65,8 +71,8 @@ const Input = () => {
 
   return (
     <div
-      className="flex flex-col p-6 justify-center items-center
-     gap-2 bg-white w-full max-w-[550px] rounded-lg "
+      className="flex relative z-10 flex-col p-6 justify-center items-center
+     gap-2  w-full max-w-[550px] rounded-lg "
     >
       <h1 className="flex text-xl  gap-1 items-center text-sky-400">
         Enter URL{" "}
@@ -74,8 +80,11 @@ const Input = () => {
       </h1>
       <input
         type="text"
-        className=" backdrop-blur-sm border text-sky-900
-         border-black px-8 py-2 w-full rounded-lg"
+        className={` bg-transparent backdrop-blur-sm border text-sky-900 px-8 py-2 w-full rounded-lg ${
+          darkMode
+            ? `border-white`
+            : `border-black`
+        }`}
         onInput={(e) =>
           setUrl(
             (e.target as HTMLInputElement).value
@@ -121,7 +130,7 @@ const Input = () => {
       )}
       <ToastContainer
         position="bottom-left"
-        autoClose={5000}
+        autoClose={1000}
         hideProgressBar
         newestOnTop
         closeOnClick
