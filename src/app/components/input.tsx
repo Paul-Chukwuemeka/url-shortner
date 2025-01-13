@@ -27,6 +27,7 @@ const Input: React.FC<InputProps> = ({
   const [tinyUrl, setTinyUrl] =
     useState<string>("");
 
+
   const shortenUrl = async (url: string) => {
     setLoading(true);
     setError(false);
@@ -36,8 +37,8 @@ const Input: React.FC<InputProps> = ({
       return;
     }
     try {
-      const apiKey = process.env.NEXT_TINY_URL;
-      console.log(apiKey);
+      const apiKey =
+        process.env.NEXT_PUBLIC_TINY_URL;
       const apiUrl =
         "https://api.tinyurl.com/create";
 

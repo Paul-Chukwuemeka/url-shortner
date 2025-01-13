@@ -29,7 +29,7 @@ const ParticlesComponent = () => {
 
       particles: {
         color: {
-          value: ["#FF0000", "#00FF00","white","white"],
+          value: ["#FF0000", "#00FF00","#38bdf8","#38bdf8"],
           random: true,
         },
         
