@@ -39,6 +39,7 @@ const Input: React.FC<InputProps> = ({
     try {
       const apiKey =
         process.env.NEXT_PUBLIC_TINY_URL;
+        console.log(apiKey)
       const apiUrl =
         "https://api.tinyurl.com/create";
 
