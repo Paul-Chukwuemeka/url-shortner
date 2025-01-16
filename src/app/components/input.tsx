@@ -1,6 +1,6 @@
 "use client";
 import React from "react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { FaCopy } from "react-icons/fa";
 import { IoLinkSharp } from "react-icons/io5";
 import { FadeLoader } from "react-spinners";
@@ -27,6 +27,29 @@ const Input: React.FC<InputProps> = ({
   const [tinyUrl, setTinyUrl] =
     useState<string>("");
 
+  const [shortenedUrls, setShortenedUrls] =
+    useState<{
+      shortUrl: string;
+      originalUrl: string;
+      qrCode: string;
+      dateCreated: string;
+    }[]>([]);
+
+  useEffect(() => {
+    const storedUrls = localStorage.getItem(
+      "shortenedUrls"
+    );
+    if (storedUrls) {
+      setShortenedUrls(JSON.parse(storedUrls));
+    }
+  }, []);
+
+  useEffect(() => {
+    localStorage.setItem(
+      "shortenedUrls",
+      JSON.stringify(shortenedUrls)
+    );
+  },[shortenedUrls]);
 
   const shortenUrl = async (url: string) => {
     setLoading(true);
@@ -55,6 +78,7 @@ const Input: React.FC<InputProps> = ({
       const data = await response.json();
       setTinyUrl(data.data.tiny_url);
       setTextToCopy(data.data.tiny_url);
+
       setLoading(false);
     } catch (error) {
       console.log(error);
@@ -72,39 +96,52 @@ const Input: React.FC<InputProps> = ({
 
   return (
     <div
-      className="flex relative z-10 flex-col p-6 justify-center items-center
+      className="flex text-center items-center justify-around relative z-10 flex-col p-6 justify-center items-center
      gap-2  w-full max-w-[550px] rounded-lg "
     >
-      <h1 className="flex text-xl  gap-1 items-center text-sky-400">
-        Enter URL{" "}
-        <IoLinkSharp className="text-2xl -rotate-45" />
+      <h1 className="gradient-text p-2 flex text-4xl font-extrabold gap-1 items-center ">
+        Shorten Your Loooong Links
       </h1>
-      <input
-        type="text"
-        className={` bg-transparent backdrop-blur-sm border text-sky-900 px-8 py-2 w-full rounded-lg ${
+      <p>
+        Linkly is an efficient and easy-to-use URL
+        shortening service that streamlines your
+        online experience.
+      </p>
+      <div
+        className={` flex items-center rounded-[40px] justify-around gap-4 bg-transparent backdrop-blur-sm border text-sky-900 px-2 py-2 w-full rounded-lg ${
           darkMode
             ? `border-white`
             : `border-black`
         }`}
-        onInput={(e) =>
-          setUrl(
-            (e.target as HTMLInputElement).value
-          )
-        }
-        onPaste={(e) =>
-          setUrl(
-            (e.target as HTMLInputElement).value
-          )
-        }
-      />
-      <button
-        className="bg-sky-500 text-white p-2 font-extrabold rounded-lg w-3/4"
-        onClick={() => {
-          shortenUrl(url);
-        }}
       >
-        Shorten Url
-      </button>
+        <p className="rotate-45 text-2xl p-2  ">
+          <IoLinkSharp />
+        </p>
+        <input
+          type="text"
+          placeholder=" Enter your link here"
+          className="bg-transparent placeholder:text-sky-500 p-1 px-1 w-[70%] focus:outline-none focus:ring-0"
+          onInput={(e) =>
+            setUrl(
+              (e.target as HTMLInputElement).value
+            )
+          }
+          onPaste={(e) =>
+            setUrl(
+              (e.target as HTMLInputElement).value
+            )
+          }
+        />
+
+        <button
+          className="bg-sky-500 text-white h-14 w-40 font-extrabold rounded-full "
+          onClick={() => {
+            shortenUrl(url);
+          }}
+        >
+          Shorten Url
+        </button>
+      </div>
 
       {tinyUrl && (
         <div className="p-5 bg-sky-200 flex items-center justify-center rounded-lg w-full text-center">
