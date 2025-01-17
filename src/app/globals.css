@@ -54,13 +54,16 @@
   transform: translateX(-5);
   z-index: -10;
 }
-td{
-  height: 100px;
-  border: solid;
+th{
   padding: 5px;
-  margin: 0px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-direction: column;
+  border:2px solid #38bff854;
+}
+td{
+  border:2px solid #38bff86e;
+  p{
+    padding: 5px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
 }
