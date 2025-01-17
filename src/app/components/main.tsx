@@ -4,7 +4,7 @@ import QRCode from "react-qr-code";
 
 const Main = ({}) => {
   return (
-    <div className="flex relative z-10 flex-col main w-full max-w-[560px] gap-4 ">
+    <div className="flex relative z-10 flex-col main w-full gap-4 ">
       <table>
         <thead>
           <tr>
@@ -19,7 +19,7 @@ const Main = ({}) => {
             <td>https://tinyurl.com/2axaab5w</td>
             <td>www.google.com</td>
             <td>
-              <QRCode value="test" />
+              <QRCode value="test" className="w-[50px] h-[50px] p-0" />
             </td>
             <td>12/12/2003</td>
           </tr>
