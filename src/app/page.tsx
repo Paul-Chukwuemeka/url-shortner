@@ -4,9 +4,16 @@ import Header from "./components/header";
 import Input from "./components/input";
 import Main from "./components/main";
 import ParticlesComponent from "./components/particleComponents";
-
 export default function Home() {
   const [darkMode, setDarkMode] = useState(false);
+  const  [shortenedUrls, setShortenedUrls] =
+      useState<
+        {
+          shortUrl: string;
+          originalUrl: string;
+          dateCreated: string;
+        }[]
+      >([]);
 
   return (
     <div
@@ -21,8 +28,8 @@ export default function Home() {
         darkMode={darkMode}
         setDarkMode={setDarkMode}
       />
-      <Input darkMode={darkMode}/>
-      <Main />
+      <Input darkMode={darkMode} shortenedUrls={shortenedUrls} setShortenedUrls={setShortenedUrls}/>
+      <Main shortenedUrls={shortenedUrls}/>
     </div>
   );
 }

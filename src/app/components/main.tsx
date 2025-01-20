@@ -1,28 +1,48 @@
 import QRCode from "react-qr-code";
 
 
+interface Url {
+  shortUrl: string;
+  originalUrl: string;
+  dateCreated: string;
+}
 
-const Main = ({}) => {
+interface MainProps {
+  shortenedUrls: Url[];
+}
+
+const Main: React.FC<MainProps> = ({
+  shortenedUrls,
+}) => {
+    console.log(shortenedUrls);
+  
   return (
-    <div className="flex relative z-10 flex-col main w-full gap-4 ">
-      <table className="w-full border-2 border-sky-300 border-collapse">
-        <thead>
+    <div className="flex relative z-10 flex-col main w-[100vw] gap-4 ">
+      <table className="w-[100vw] backdrop-blur-sm rounded-lg">
+        <thead className="bg-[#181E29] rounded-lg text-white ">
           <tr>
-            <th>Short Link</th>
+            <th className="rounded-bl-lg rounded-tl-lg p-4">
+              Short Link
+            </th>
             <th> Original Link</th>
             <th> Qr code</th>
-            <th> Date Created</th>
+            <th className="rounded-br-lg rounded-tr-lg">
+              {" "}
+              Date Created
+            </th>
           </tr>
         </thead>
-        <tbody>
-          <tr>
-            <td><p>www.google.com</p></td>
-            <td><p>www.google.com</p></td>
-            <td>
-              <p><QRCode value="test" className="w-[50px] h-[50px] p-0" /></p>
-            </td>
-            <td><p>12/12/2003</p></td>
-          </tr>
+        <tbody className=" h-fit min-h-96 w-[100vw] overflow-hidden">
+          {shortenedUrls.map((url, index) => {
+            return(
+              <tr key={index}>
+                <td >{url.shortUrl}</td>
+                <td >{url.originalUrl}</td>
+                <td ><QRCode value={url.shortUrl}/></td>
+                <td >{url.dateCreated}</td>
+              </tr>
+            )
+          })}
         </tbody>
       </table>
     </div>

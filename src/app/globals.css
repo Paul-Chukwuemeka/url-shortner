@@ -25,9 +25,8 @@
 }
 
 .gradient-text {
-
   font-weight: bold;
-  background: linear-gradient(to right, rgb(204, 8, 8), #38bdf8);
+  background: linear-gradient(to right, #cc0808, #38bdf8);
   background-clip: text;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -56,14 +55,11 @@
 }
 th{
   padding: 5px;
-  border:2px solid #38bff854;
 }
 td{
-  border:2px solid #38bff86e;
-  p{
-    padding: 5px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
+  width:100px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  border: solid;
 }

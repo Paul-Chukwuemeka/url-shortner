@@ -1,6 +1,10 @@
 "use client";
 import React from "react";
-import { useState, useEffect } from "react";
+import {
+  useState,
+  useEffect,
+} from "react";
+
 import { FaCopy } from "react-icons/fa";
 import { IoLinkSharp } from "react-icons/io5";
 import { FadeLoader } from "react-spinners";
@@ -12,10 +16,15 @@ import {
 
 interface InputProps {
   darkMode: boolean;
+  shortenedUrls: { shortUrl: string; originalUrl: string; dateCreated: string }[];
+  setShortenedUrls: React.Dispatch<React.SetStateAction<{ shortUrl: string; originalUrl: string; dateCreated: string }[]>>
+
 }
 
 const Input: React.FC<InputProps> = ({
+  shortenedUrls,
   darkMode,
+  setShortenedUrls
 }) => {
   const [url, setUrl] = useState<string>("");
   const [error, setError] =
@@ -26,14 +35,6 @@ const Input: React.FC<InputProps> = ({
     useState<boolean>(false);
   const [tinyUrl, setTinyUrl] =
     useState<string>("");
-
-  const [shortenedUrls, setShortenedUrls] =
-    useState<{
-      shortUrl: string;
-      originalUrl: string;
-      qrCode: string;
-      dateCreated: string;
-    }[]>([]);
 
   useEffect(() => {
     const storedUrls = localStorage.getItem(
@@ -49,7 +50,7 @@ const Input: React.FC<InputProps> = ({
       "shortenedUrls",
       JSON.stringify(shortenedUrls)
     );
-  },[shortenedUrls]);
+  }, [shortenedUrls]);
 
   const shortenUrl = async (url: string) => {
     setLoading(true);
@@ -78,7 +79,16 @@ const Input: React.FC<InputProps> = ({
       const data = await response.json();
       setTinyUrl(data.data.tiny_url);
       setTextToCopy(data.data.tiny_url);
+      const newShortenedUrl = {
+        shortUrl: data.data.tiny_url,
+        originalUrl: url,
+        dateCreated: new Date().toISOString(),
+      };
 
+      setShortenedUrls([
+        ...shortenedUrls,
+        newShortenedUrl,
+      ]); // Update the state
       setLoading(false);
     } catch (error) {
       console.log(error);
@@ -96,7 +106,7 @@ const Input: React.FC<InputProps> = ({
 
   return (
     <div
-      className="flex text-center items-center justify-around relative z-10 flex-col p-6 justify-center items-center
+      className="flex text-center relative z-10 flex-col p-6 justify-center items-center
      gap-2  w-full max-w-[550px] rounded-lg "
     >
       <h1 className="gradient-text p-2 flex text-4xl font-extrabold gap-1 items-center ">
@@ -108,7 +118,7 @@ const Input: React.FC<InputProps> = ({
         online experience.
       </p>
       <div
-        className={` flex items-center rounded-[40px] justify-around gap-4 bg-transparent backdrop-blur-sm border text-sky-900 px-2 py-2 w-full rounded-lg ${
+        className={` flex items-center justify-around gap-4 bg-transparent backdrop-blur-sm border text-sky-900 px-2 py-2 w-full rounded-lg ${
           darkMode
             ? `border-white`
             : `border-black`
