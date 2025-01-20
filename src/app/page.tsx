@@ -19,8 +19,8 @@ export default function Home() {
     <div
       className={
         !darkMode
-          ? `bg-zinc-200 h-fit min-h-screen flex flex-col p-4 items-center py-2`
-          : ` bg-black flex h-fit min-h-screen  text-white flex-col p-4 items-center py-2`
+          ? `bg-zinc-200 h-fit min-h-screen flex flex-col p-10 items-center py-2`
+          : ` bg-black flex h-fit min-h-screen  text-white flex-col p-10  items-center py-2`
       }
     >
       <ParticlesComponent />
