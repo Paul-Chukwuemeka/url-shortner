@@ -1,8 +1,8 @@
 import QRCode from "react-qr-code";
-import { FaCopy } from "react-icons/fa";
-import { useState } from "react";
+import { FaCopy,FaAngleDown } from "react-icons/fa";
+import { useState, useEffect } from "react";
 import { toast } from "react-toastify";
-
+import { useWindowSize } from "react-use";
 
 interface Url {
   shortUrl: string;
@@ -25,78 +25,121 @@ const Main: React.FC<MainProps> = ({
     navigator.clipboard.writeText(textToCopy);
     notify();
   };
+  const [windowWidth, setWindowWidth] =
+    useState<number>(0);
+  const { width } = useWindowSize();
 
-
-
+  useEffect(() => {
+    setWindowWidth(width);
+  }, [width]);
   return (
     <div className="flex relative z-10 flex-col main w-[100vw] gap-4 ">
-      <table className="w-[100vw] backdrop-blur-sm rounded-lg p-5">
-        <thead className="bg-[#181E29] rounded-lg text-white ">
-          <tr className="my-10">
-            <th className="rounded-bl-lg rounded-tl-lg p-4">
-              Short Link
-            </th>
-            <th> Original Link</th>
-            <th> Qr code</th>
-            <th className="rounded-br-lg rounded-tr-lg">
-              {" "}
-              Date Created
-            </th>
-          </tr>
-        </thead>
-        <tbody className=" h-fit  w-[100vw] border-sky-500  backdrop-blur-sm overflow-hidden mt-2">
-          {shortenedUrls.length > 0 &&
-            shortenedUrls.map((url, index) => {
-              return (
-                <tr
-                  key={index}
-                  className="rounded-xl border-2 border-sky-500"
-                >
-                  <td className="cursor-pointer max-w-[35%] px-4 "title="Copy" onClick={()=>{
-                    setTextToCopy(url.shortUrl);
-                    handleCopy();
-                  }} >
-                    <p className="flex items-center justify-center gap-1">
-                      {url.shortUrl}
-                      <FaCopy className="text-sky-500 text-xl" />
-                    </p>
-                  </td>
-                  <td className="cursor-pointer lg:max-w-[480px] ">
-                    {url.originalUrl}
-                  </td>
-                  <td>
-                    <p className="flex items-center justify-center">
-                      <QRCode
-                        value={url.shortUrl}
-                        className="h-[60px]"
-                      />
-                    </p>
-                  </td>
-                  <td>
-                    {new Date(
-                      url.dateCreated
-                    ).toLocaleDateString()}
-                  </td>
-                </tr>
-              );
-            })}
-          {shortenedUrls.length === 0 && (
-            <tr>
-              <td
-                colSpan={4}
-                className=" text-center"
-              >
-                <div className="h-44 backdrop-blur-lg ">
-                  <h1 className="text-3xl font-bold text-center ">
-                    You have not shortened any
-                    links yet.
-                  </h1>
-                </div>
-              </td>
+      {windowWidth > 750 && (
+        <table className="w-[100vw] backdrop-blur-sm rounded-lg p-5">
+          <thead className="bg-[#181E29] rounded-lg text-white ">
+            <tr className="my-10">
+              <th className="rounded-bl-lg rounded-tl-lg p-4">
+                Short Link
+              </th>
+              <th> Original Link</th>
+              <th> Qr code</th>
+              <th className="rounded-br-lg rounded-tr-lg">
+                {" "}
+                Date Created
+              </th>
             </tr>
-          )}
-        </tbody>
-      </table>
+          </thead>
+          <tbody className=" h-fit  w-[100vw] border-sky-500  backdrop-blur-sm overflow-hidden mt-2">
+            {shortenedUrls.length > 0 &&
+              shortenedUrls.map((url, index) => {
+                return (
+                  <tr
+                    key={index}
+                    className="rounded-xl border-2 border-sky-500"
+                  >
+                    <td
+                      className="cursor-pointer max-w-[35%] px-4 "
+                      title="Copy"
+                      onClick={() => {
+                        setTextToCopy(
+                          url.shortUrl
+                        );
+                        handleCopy();
+                      }}
+                    >
+                      <p className="flex items-center justify-center gap-1">
+                        {url.shortUrl}
+                        <FaCopy className="text-sky-500 text-xl" />
+                      </p>
+                    </td>
+                    <td className="cursor-pointer lg:max-w-[480px] ">
+                      {url.originalUrl}
+                    </td>
+                    <td>
+                      <p className="flex items-center justify-center">
+                        <QRCode
+                          value={url.shortUrl}
+                          className="h-[60px]"
+                        />
+                      </p>
+                    </td>
+                    <td>
+                      {new Date(
+                        url.dateCreated
+                      ).toLocaleDateString()}
+                    </td>
+                  </tr>
+                );
+              })}
+            {shortenedUrls.length === 0 && (
+              <tr>
+                <td
+                  colSpan={4}
+                  className=" text-center"
+                >
+                  <div className="h-44 backdrop-blur-lg ">
+                    <h1 className="text-3xl font-bold text-center ">
+                      You have not shortened any
+                      links yet.
+                    </h1>
+                  </div>
+                </td>
+              </tr>
+            )}
+          </tbody>
+        </table>
+      )}
+      {windowWidth <= 750 ? (
+        <div className="p-4">
+          <div className="bg-[#181E29] text-white text-2xl rounded-xl py-4 ">
+            <h1>Shortened Links</h1>
+          </div>
+          <div>
+            {shortenedUrls.length > 0 &&
+              shortenedUrls.map((url, index) => (
+                <div
+                  key={index}
+                  className="bg-[#181e2944] 
+                  flex items-center justify-between backdrop-blur-sm text-white rounded-xl p-4 px-6 mt-2"
+                >
+                  <p
+                    className="cursor-pointer flex gap-2 p-4 items-center "
+                    title="Copy"
+                    onClick={() => {
+                      setTextToCopy(url.shortUrl);
+                      handleCopy();
+                    }}
+                  >
+                    {url.shortUrl}{" "}
+                    <FaCopy className="text-sky-500 text-xl" />
+                  </p>
+
+                  <FaAngleDown />
+                </div>
+              ))}
+          </div>
+        </div>
+      ) : null}
     </div>
   );
 };

@@ -5,7 +5,7 @@ import Input from "./components/input";
 import Main from "./components/main";
 import ParticlesComponent from "./components/particleComponents";
 export default function Home() {
-  const [darkMode, setDarkMode] = useState(false);
+  const [darkMode, setDarkMode] = useState(true);
   const  [shortenedUrls, setShortenedUrls] =
       useState<
         {

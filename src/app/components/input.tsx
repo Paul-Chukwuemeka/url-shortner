@@ -4,7 +4,6 @@ import {
   useState,
   useEffect,
 } from "react";
-
 import { FaCopy } from "react-icons/fa";
 import { IoLinkSharp } from "react-icons/io5";
 import { FadeLoader } from "react-spinners";
@@ -36,6 +35,8 @@ const Input: React.FC<InputProps> = ({
   const [tinyUrl, setTinyUrl] =
     useState<string>("");
 
+  
+
   useEffect(() => {
     const storedUrls = localStorage.getItem(
       "shortenedUrls"
@@ -44,6 +45,8 @@ const Input: React.FC<InputProps> = ({
       setShortenedUrls(JSON.parse(storedUrls));
     }
   }, []);
+
+
 
   useEffect(() => {
     localStorage.setItem(
@@ -107,10 +110,10 @@ const Input: React.FC<InputProps> = ({
   return (
     <div
       className="flex text-center relative z-10 flex-col p-6 justify-center items-center
-     gap-2  w-full max-w-[550px] rounded-lg "
+     gap-2  w-full max-w-[550px] max-sm:w-[90vw]  rounded-lg "
     >
       <h1 className="gradient-text p-2 flex text-4xl font-extrabold gap-1 items-center ">
-        Shorten Your Loooong Links
+        Shorten Your Loooong Links 
       </h1>
       <p>
         Linkly is an efficient and easy-to-use URL
@@ -118,19 +121,20 @@ const Input: React.FC<InputProps> = ({
         online experience.
       </p>
       <div
-        className={` flex items-center justify-around gap-4 bg-transparent backdrop-blur-sm border text-sky-900 px-2 py-2 w-full rounded-lg ${
+        className={` flex items-center max-lg:flex-col max-lg:border-none justify-around gap-4 bg-transparent backdrop-blur-sm border text-sky-900 px-2 py-2 w-full rounded-lg ${
           darkMode
             ? `border-white`
             : `border-black`
         }`}
       >
-        <p className="rotate-45 text-2xl p-2  ">
+        <p className="rotate-45 text-2xl p-2  max-lg:hidden ">
           <IoLinkSharp />
         </p>
         <input
           type="text"
           placeholder=" Enter your link here"
-          className="bg-transparent placeholder:text-sky-500 p-1 px-1 w-[70%] focus:outline-none focus:ring-0"
+          value={url}
+          className="bg-transparent placeholder:text-sky-500 p-1 px-1 w-[70%] focus:outline-none focus:ring-0 max-lg:w-full max-lg:border-2 max-lg:p-3 max-lg:border-sky-500 max-lg:rounded-lg"
           onInput={(e) =>
             setUrl(
               (e.target as HTMLInputElement).value
@@ -144,7 +148,7 @@ const Input: React.FC<InputProps> = ({
         />
 
         <button
-          className="bg-sky-500 text-white h-14 w-40 font-extrabold rounded-full "
+          className="bg-sky-500 text-white h-14 w-40 font-extrabold rounded-full max-lg:w-full max-lg:rounded-xl "
           onClick={() => {
             shortenUrl(url);
           }}
@@ -163,7 +167,7 @@ const Input: React.FC<InputProps> = ({
             />
           ) : (
             <div className="flex items-center gap-2 text-xl ">
-              <p className="w-96">{tinyUrl}</p>
+              <p className="w-96 max-lg:w-fit">{tinyUrl}</p>
               <button onClick={handleCopy}>
                 <FaCopy />
               </button>
@@ -173,11 +177,10 @@ const Input: React.FC<InputProps> = ({
       )}
       {error && (
         <div className="p-5 bg-red-300 rounded-lg w-full text-center">
-          An error occurred. Please try again.
+          An error occurred while shortening the URL. Please try again.
         </div>
       )}
       <ToastContainer
-        position="bottom-left"
         autoClose={1000}
         hideProgressBar
         newestOnTop
@@ -188,6 +191,7 @@ const Input: React.FC<InputProps> = ({
         pauseOnHover
         theme="light"
         transition={Bounce}
+        className="absolute z-100 h-fit bottom-0 right-0"
       />
     </div>
   );
