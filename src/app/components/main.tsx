@@ -1,7 +1,14 @@
 import QRCode from "react-qr-code";
-import { FaCopy,FaAngleDown } from "react-icons/fa";
+import {
+  FaCopy,
+  FaAngleDown,
+} from "react-icons/fa";
 import { useState, useEffect } from "react";
-import { toast } from "react-toastify";
+import {
+  ToastContainer,
+  toast,
+  Bounce,
+} from "react-toastify";
 import { useWindowSize } from "react-use";
 
 interface Url {
@@ -25,6 +32,8 @@ const Main: React.FC<MainProps> = ({
     navigator.clipboard.writeText(textToCopy);
     notify();
   };
+  const [expanded, setExpanded] =
+    useState<number>(-1);
   const [windowWidth, setWindowWidth] =
     useState<number>(0);
   const { width } = useWindowSize();
@@ -120,26 +129,65 @@ const Main: React.FC<MainProps> = ({
                 <div
                   key={index}
                   className="bg-[#181e2944] 
-                  flex items-center justify-between backdrop-blur-sm text-white rounded-xl p-4 px-6 mt-2"
+                  flex flex-col items-center justify-between backdrop-blur-sm text-white rounded-xl p-4 px-6 mt-2"
                 >
-                  <p
-                    className="cursor-pointer flex gap-2 p-4 items-center "
-                    title="Copy"
-                    onClick={() => {
-                      setTextToCopy(url.shortUrl);
-                      handleCopy();
-                    }}
-                  >
-                    {url.shortUrl}{" "}
-                    <FaCopy className="text-sky-500 text-xl" />
-                  </p>
+                  <div className="flex items-center justify-between gap-2 w-full ">
+                    <p
+                      className="cursor-pointer flex gap-2 p-4 items-center "
+                      title="Copy"
+                      onClick={() => {
+                        setTextToCopy(
+                          url.shortUrl
+                        );
+                        handleCopy();
+                      }}
+                    >
+                      {url.shortUrl}{" "}
+                      <FaCopy className="text-sky-500 text-2xl" />
+                    </p>
 
-                  <FaAngleDown />
+                    <FaAngleDown
+                      className="text-2xl"
+                      onClick={() => {
+                        if (expanded === index) {
+                          setExpanded(-1);
+                        } else {
+                          setExpanded(index);
+                        }
+                      }}
+                    />
+                  </div>
+                  <div>
+                    {expanded === index && (
+                      <div className="w-full flex flex-col gap-2 ">
+                        <p>
+                          Original Link: <span className="text-sky-500">{url.originalUrl}</span>
+                        </p>
+                        <QRCode value={url.shortUrl} size={128}  />
+                        <p className="p-2 text-xxl">
+                          Date Created: <span className="text-sky-500">{new Date(url.dateCreated).toLocaleDateString()}</span>
+                        </p>
+                      </div>
+                    )}
+                  </div>
                 </div>
               ))}
           </div>
         </div>
       ) : null}
+           <ToastContainer
+              autoClose={1000}
+              hideProgressBar
+              newestOnTop
+              closeOnClick
+              rtl={false}
+              pauseOnFocusLoss
+              draggable
+              pauseOnHover
+              theme="light"
+              transition={Bounce}
+              className="absolute z-100 h-fit bottom-0 right-0"
+            />
     </div>
   );
 };
