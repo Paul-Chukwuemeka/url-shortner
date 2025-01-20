@@ -82,7 +82,7 @@ const Input: React.FC<InputProps> = ({
       const newShortenedUrl = {
         shortUrl: data.data.tiny_url,
         originalUrl: url,
-        dateCreated: new Date().toISOString(),
+        dateCreated: new Date().toLocaleDateString(),
       };
 
       setShortenedUrls([

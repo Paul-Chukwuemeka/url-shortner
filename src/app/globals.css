@@ -57,9 +57,11 @@ th{
   padding: 5px;
 }
 td{
-  width:100px;
+  width:25%;
+  max-width: 20vw;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
-  border: solid;
+  padding: 10px;
+  text-align: center;
 }

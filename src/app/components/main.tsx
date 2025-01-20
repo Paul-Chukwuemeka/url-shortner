@@ -35,11 +35,15 @@ const Main: React.FC<MainProps> = ({
         <tbody className=" h-fit min-h-96 w-[100vw] overflow-hidden">
           {shortenedUrls.map((url, index) => {
             return(
-              <tr key={index}>
-                <td >{url.shortUrl}</td>
-                <td >{url.originalUrl}</td>
-                <td ><QRCode value={url.shortUrl}/></td>
-                <td >{url.dateCreated}</td>
+              <tr key={index} className="">
+                <td className="">{url.shortUrl}</td>
+                <td>{url.originalUrl}</td>
+                <td>
+                  <p className="flex items-center justify-center">
+                  <QRCode value={url.shortUrl} className="h-[60px]"/>
+                  </p>
+                </td>
+                <td >{new Date(url.dateCreated).toLocaleDateString()}</td>
               </tr>
             )
           })}
